@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Tec_张鲲">
 <meta property="og:description" content="iOS 后台下载及管理库 2017-11-23 LeavesLife Cocoa开发者社区 说起下载第一个想起的就是ASI。一年前接手的新项目是核心功能是视频相关业务，在修改和解决视频下载相关的问题的时候让我体会到了ASI的下载的强大。后来新需求需要视频后台下载，使用NSURLSession的时候，更加深刻的体会到了ASI的强大好用。 后来替换下载的时候的原因： ASI开启后台下载功能，在iOS1">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-23T05:39:38.000Z">
+<meta property="og:updated_time" content="2017-11-28T11:38:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS后台下载及管理库">
 <meta name="twitter:description" content="iOS 后台下载及管理库 2017-11-23 LeavesLife Cocoa开发者社区 说起下载第一个想起的就是ASI。一年前接手的新项目是核心功能是视频相关业务，在修改和解决视频下载相关的问题的时候让我体会到了ASI的下载的强大。后来新需求需要视频后台下载，使用NSURLSession的时候，更加深刻的体会到了ASI的强大好用。 后来替换下载的时候的原因： ASI开启后台下载功能，在iOS1">
@@ -304,6 +304,7 @@
 <p>说起下载第一个想起的就是ASI。一年前接手的新项目是核心功能是视频相关业务，在修改和解决视频下载相关的问题的时候让我体会到了ASI的下载的强大。后来新需求需要视频后台下载，使用NSURLSession的时候，更加深刻的体会到了ASI的强大好用。</p>
 <p>后来替换下载的时候的原因：</p>
 <p>ASI开启后台下载功能，在iOS10的设备上，只能下载三分钟，然后就处于休眠状态<br>AFN下载也是三分钟<br>测试后台下载的时候，不要用模拟器，使用用真机。模拟器APP处于后台时不会休眠。</p>
+<a id="more"></a>
 <p>NSURLSession的特点简介</p>
 <p>通过NSURLSession创建的后台下载任务，保证了APP在后台或者退出的状态下，依然能进行下载任务，下载完成后通过唤醒APP，来将下载完成的数据保存到特定的位置。</p>
 <p>在APP处于后台、锁屏状态下依然能后下载<br>最强大的是：APP在手动退出以及闪退后的状态下依然能够进行下载任务</p>

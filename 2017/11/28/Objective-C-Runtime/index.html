@@ -94,7 +94,7 @@
 <meta property="og:image" content="http://7ni3rk.com1.z0.glb.clouddn.com/nf1.png">
 <meta property="og:image" content="http://7ni3rk.com1.z0.glb.clouddn.com/nf2.png">
 <meta property="og:image" content="http://7ni3rk.com1.z0.glb.clouddn.com/nf3.png">
-<meta property="og:updated_time" content="2017-11-28T10:31:55.000Z">
+<meta property="og:updated_time" content="2017-11-28T11:34:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Objective-C Runtime">
 <meta name="twitter:description" content="本文详细整理了 Cocoa 的 Runtime 系统的知识，它使得 Objective-C 如虎添翼，具备了灵活的动态特性，使这门古老的语言焕发生机。主要内容如下：  引言  简介  与 Runtime 交互  Runtime 基础数据结构  消息  动态方法解析  消息转发  健壮的实例变量 (Non Fragile ivars)  Objective-C Associated Objects">
@@ -333,6 +333,7 @@
 <li><p>总结</p>
 </li>
 </ul>
+<a id="more"></a>
 <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>曾经觉得Objc特别方便上手，面对着 Cocoa 中大量 API，只知道简单的查文档和调用。还记得初学 Objective-C 时把 [receiver message] 当成简单的方法调用，而无视了“发送消息”这句话的深刻含义。其实 [receiver message] 会被编译器转化为：</p>
 <pre><code>objc_msgSend(receiver, selector)
 </code></pre><p>如果消息含有参数，则为：</p>
