@@ -79,16 +79,26 @@
 
 
 
-<meta name="description" content="日常开发调研、收藏整理的技术栈">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Tec_张鲲">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="本文详细整理了 Cocoa 的 Runtime 系统的知识，它使得 Objective-C 如虎添翼，具备了灵活的动态特性，使这门古老的语言焕发生机。主要内容如下：  引言  简介  与 Runtime 交互  Runtime 基础数据结构  消息  动态方法解析  消息转发  健壮的实例变量 (Non Fragile">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Objective-C Runtime">
+<meta property="og:url" content="http://yoursite.com/2017/11/28/Objective-C-Runtime/index.html">
 <meta property="og:site_name" content="Tec_张鲲">
-<meta property="og:description" content="日常开发调研、收藏整理的技术栈">
+<meta property="og:description" content="本文详细整理了 Cocoa 的 Runtime 系统的知识，它使得 Objective-C 如虎添翼，具备了灵活的动态特性，使这门古老的语言焕发生机。主要内容如下：  引言  简介  与 Runtime 交互  Runtime 基础数据结构  消息  动态方法解析  消息转发  健壮的实例变量 (Non Fragile ivars)  Objective-C Associated Objects">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7ni3rk.com1.z0.glb.clouddn.com/Runtime/class-diagram.jpg">
+<meta property="og:image" content="http://yoursite.com/Users/sadmile/Documents/WechatIMG13.jpeg">
+<meta property="og:image" content="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Art/messaging1.gif">
+<meta property="og:image" content="http://7ni3rk.com1.z0.glb.clouddn.com/QQ20141113-1@2x.png?imageView2/2/w/800/q/75|watermark/2/text/eXVsaW5ndGlhbnhpYQ==/font/Y29taWMgc2FucyBtcw==/fontsize/500/fill/I0VGRUZFRg==/dissolve/100/gravity/SouthEast/dx/10/dy/10">
+<meta property="og:image" content="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Art/forwarding.gif">
+<meta property="og:image" content="http://7ni3rk.com1.z0.glb.clouddn.com/nf1.png">
+<meta property="og:image" content="http://7ni3rk.com1.z0.glb.clouddn.com/nf2.png">
+<meta property="og:image" content="http://7ni3rk.com1.z0.glb.clouddn.com/nf3.png">
+<meta property="og:updated_time" content="2017-11-28T10:31:55.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Tec_张鲲">
-<meta name="twitter:description" content="日常开发调研、收藏整理的技术栈">
+<meta name="twitter:title" content="Objective-C Runtime">
+<meta name="twitter:description" content="本文详细整理了 Cocoa 的 Runtime 系统的知识，它使得 Objective-C 如虎添翼，具备了灵活的动态特性，使这门古老的语言焕发生机。主要内容如下：  引言  简介  与 Runtime 交互  Runtime 基础数据结构  消息  动态方法解析  消息转发  健壮的实例变量 (Non Fragile ivars)  Objective-C Associated Objects">
+<meta name="twitter:image" content="http://7ni3rk.com1.z0.glb.clouddn.com/Runtime/class-diagram.jpg">
 
 
 
@@ -118,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/11/28/Objective-C-Runtime/"/>
 
 
 
 
 
-  <title>Tec_张鲲</title>
+  <title>Objective-C Runtime | Tec_张鲲</title>
   
 
 
@@ -143,8 +153,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -217,9 +226,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -249,9 +258,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/28/Objective-C-Runtime/" itemprop="url">Objective-C Runtime</a></h1>
+          <h1 class="post-title" itemprop="name headline">Objective-C Runtime</h1>
         
 
         <div class="post-meta">
@@ -301,9 +308,7 @@
       
 
       
-        
-          
-            <p>本文详细整理了 Cocoa 的 Runtime 系统的知识，它使得 Objective-C 如虎添翼，具备了灵活的动态特性，使这门古老的语言焕发生机。主要内容如下：</p>
+        <p>本文详细整理了 Cocoa 的 Runtime 系统的知识，它使得 Objective-C 如虎添翼，具备了灵活的动态特性，使这门古老的语言焕发生机。主要内容如下：</p>
 <ul>
 <li><p>引言</p>
 </li>
@@ -1054,8 +1059,6 @@ SKNode.yxy_swizzleRemoveFromParent()
 <li><a href="http://cocoasamurai.blogspot.jp/2010/01/understanding-objective-c-runtime.html" target="_blank" rel="noopener"> Understanding the Objective-C Runtime</a></li>
 </ul>
 
-          
-        
       
     </div>
     
@@ -1072,917 +1075,28 @@ SKNode.yxy_swizzleRemoveFromParent()
       
 
       
-
-      
-
       
       
-        <div class="post-eof"></div>
+
       
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/23/iOS-贝塞尔曲线之自定义饼图/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="sadmile">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tec_张鲲">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/23/iOS-贝塞尔曲线之自定义饼图/" itemprop="url">iOS-贝塞尔曲线之自定义饼图</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-23T13:41:42+08:00">
-                2017-11-23
-              </time>
+              <a href="/2017/11/23/iOS-贝塞尔曲线之自定义饼图/" rel="next" title="iOS-贝塞尔曲线之自定义饼图">
+                <i class="fa fa-chevron-left"></i> iOS-贝塞尔曲线之自定义饼图
+              </a>
             
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>项目中需要统计数据展现, 采用了饼图形式展现.如下图所示:</p>
-<p><img src="/Users/sadmile/Downloads/WX20171123-141706.png" alt=""></p>
-<p>一、了解贝塞尔曲线相关概念</p>
-<p>贝塞尔曲线相关概念:</p>
-<p>UIBezierPath ：画贝塞尔曲线的path类</p>
-<p>UIBezierPath定义 ： 贝赛尔曲线的每一个顶点都有两个控制点，用于控制在该顶点两侧的曲线的弧度。</p>
-<p>曲线的定义有四个点：起始点、终止点（也称锚点）以及两个相互分离的中间点。<br>滑动两个中间点，贝塞尔曲线的形状会发生变化。</p>
-<p>UIBezierPath：对象是CGPathRef数据类型的封装，可以方便的让我们画出矩形 、 椭圆 或者 直线和曲线的组合形状.</p>
-<p>使用贝塞尔曲线的基本步骤:</p>
-<p>（1）创建一个Bezier path对象。</p>
-<p>（2）使用方法moveToPoint:去设置初始线段的起点。</p>
-<p>（3）添加line或者curve去定义一个或者多个subpaths。</p>
-<p>（4）改变UIBezierPath对象跟绘图相关的属性。</p>
-<p>初始化方法：</p>
-<ul>
-<li>(instancetype)bezierPath;</li>
-</ul>
-<p>创建一个矩形:</p>
-<ul>
-<li>(instancetype)bezierPathWithRect:(CGRect)rect;</li>
-</ul>
-<p>创建圆形或者椭圆形:</p>
-<ul>
-<li>(instancetype)bezierPathWithOvalInRect:(CGRect)rect;</li>
-<li>(instancetype)bezierPathWithRoundedRect:(CGRect)rect cornerRadius:(CGFloat)cornerRadius; // rounds all corners with the same horizontal and vertical radius</li>
-<li>(instancetype)bezierPathWithRoundedRect:(CGRect)rect byRoundingCorners:(UIRectCorner)corners cornerRadii:(CGSize)cornerRadii;</li>
-<li>(instancetype)bezierPathWithArcCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise;</li>
-<li>(instancetype)bezierPathWithCGPath:(CGPathRef)CGPath;</li>
-</ul>
-<p>最基本的使用方法是：</p>
-<p>// 设置描绘的起点</p>
-<ul>
-<li>(void)moveToPoint:(CGPoint)point;</li>
-</ul>
-<p>// 画直线</p>
-<ul>
-<li>(void)addLineToPoint:(CGPoint)point;</li>
-</ul>
-<p>// 画曲线<br>// a.绘制二次贝塞尔曲线   分别对应终点和一个控制点</p>
-<ul>
-<li>(void)addQuadCurveToPoint:(CGPoint)endPoint controlPoint:(CGPoint)controlPoint</li>
-</ul>
-<p>// b.绘制三次贝塞尔曲线   分别对应终点和两个控制点</p>
-<ul>
-<li>(void)addCurveToPoint:(CGPoint)endPoint controlPoint1:(CGPoint)controlPoint1 controlPoint2:(CGPoint)controlPoint2;</li>
-</ul>
-<p>//  画圆弧</p>
-<ul>
-<li>(void)addArcWithCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise</li>
-</ul>
-<p>二:、自定义饼图的核心逻辑</p>
-<p>自定义饼图:</p>
-<p>针对上面的饼图, 实现主要思路:<br>1.初始化画布<br>2.bezierPath形成闭合的扇形路径<br>3.自定义饼图填充颜色<br>4.饼图的引出点及指引线<br>5.画引出直线<br>6.添加饼图相对应提示文字<br>7.空心展示饼图<br>8.露出方法,在所需控制器里调用即可</p>
-<ol>
-<li>初始化画布</li>
-</ol>
-<ul>
-<li>(instancetype)initWithFrame:(CGRect)frame {</li>
-</ul>
-<p>ZLBezierPieView *bezierCurveView = [[NSBundle mainBundle] loadNibNamed:@”ZLBezierPieView” owner:self options:nil].lastObject;<br>bezierCurveView.frame = frame;</p>
-<p>//背景视图<br>UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];<br>backView.backgroundColor = [UIColor clearColor];<br>[bezierCurveView addSubview:backView];</p>
-<p>myFrame = frame;<br>return bezierCurveView;<br>}</p>
-<ol>
-<li>bezierPath形成闭合的扇形路径</li>
-</ol>
-<p>UIBezierPath *bezierPath = [UIBezierPath bezierPathWithArcCenter:point<br>radius:radius<br>startAngle:startAngle                                                                 endAngle:endAngle<br>clockwise:YES];<br>[bezierPath addLineToPoint:point];<br>[bezierPath closePath];</p>
-<ol>
-<li>自定义饼图填充颜色</li>
-</ol>
-<p>// 可自定义饼图填充颜色(根据自己需求添加)<br>NSArray <em>redArray = @[@”46”,@”255”,@”62”,@”254”,@”253”,@”153”,@”110”, @”173”,@”223”,@”196”];<br>NSArray </em>greenArray = @[@”191”,@”48”,@”209”,@”199”,@”109”,@”208”,@”123”, @”110”,@”142”,@”193”];<br>NSArray *blueArray = @[@”238”,@”145”,@”185”,@”17”,@”31”,@”60”,@”254”, @”157”,@”36”,@”48”];</p>
-<p>// 填充色<br>UIColor *customColor = [UIColor colorWithRed:[[redArray objectAtIndex:i] intValue]/255.0  green:[[greenArray objectAtIndex:i] intValue]/255.0 blue:[[blueArray objectAtIndex:i] intValue]/255.0 alpha:1];</p>
-<p>// 渲染<br>CAShapeLayer *shapeLayer = [CAShapeLayer layer];<br>shapeLayer.lineWidth = 1;<br>// 填充色<br>shapeLayer.fillColor = customColor.CGColor;<br>shapeLayer.path = bezierPath.CGPath;<br>[self.layer addSublayer:shapeLayer];</p>
-<ol>
-<li>饼图的引出点及指引线</li>
-</ol>
-<p>// 饼图引出点<br>CGFloat pieX = point.x + (radius)<em>cos(startAngle+(endAngle-startAngle)/2);<br>CGFloat pieY = point.y + (radius)</em>sin(startAngle+(endAngle-startAngle)/2);</p>
-<p>// 指引线引出点<br>CGFloat X = point.x + (radius+20)<em>cos(startAngle+(endAngle-startAngle)/2);<br>CGFloat Y = point.y + (radius+20)</em>sin(startAngle+(endAngle-startAngle)/2);<br>CGFloat lineWidth = 80;</p>
-<p>// 绘制小圆点<br>CAShapeLayer <em>circleLayer = [CAShapeLayer layer];<br>circleLayer.frame = CGRectMake(0, 0, 1, 1); // 指定frame，只是为了设置宽度和高度<br>circleLayer.position = CGPointMake(X, Y); // 设置居中显示<br>circleLayer.fillColor = [UIColor clearColor].CGColor; // 设置填充颜色<br>circleLayer.lineWidth = 2.0;<br>circleLayer.strokeColor = customColor.CGColor;<br>// 使用UIBezierPath创建路径<br>CGRect frame = CGRectMake(0, 0, 2, 2);<br>UIBezierPath </em>circlePath = [UIBezierPath bezierPathWithOvalInRect:frame];<br>// 设置CAShapeLayer与UIBezierPath关联<br>circleLayer.path = circlePath.CGPath;<br>// 将CAShaperLayer放到某个层上显示<br>[self.layer addSublayer:circleLayer];</p>
-<ol>
-<li>画引出直线</li>
-</ol>
-<p>// 画第一段直线<br>CAShapeLayer <em>lineLayer = [CAShapeLayer layer];<br>lineLayer.frame = CGRectMake(0, 0, 1, 1); // 指定frame，只是为了设置宽度和高度<br>lineLayer.fillColor = [UIColor clearColor].CGColor; // 设置填充颜色<br>lineLayer.lineWidth = 1.0;<br>lineLayer.strokeColor = customColor.CGColor;<br>UIBezierPath </em>indicatrixLine = [UIBezierPath bezierPath];<br>[indicatrixLine moveToPoint:CGPointMake(pieX, pieY)];<br>[indicatrixLine addLineToPoint:CGPointMake(X, Y)];<br>lineLayer.path = indicatrixLine.CGPath;<br>lineLayer.lineWidth = 1.0;<br>lineLayer.strokeColor = customColor.CGColor;<br>[self.layer addSublayer:lineLayer];</p>
-<p>if (X &lt; point.x) { // 饼图左侧<br>X = X - lineWidth;<br>}<br>// 添加指引线(第二段直线)<br>UIView *line = [[UIView alloc] initWithFrame:CGRectMake(X, Y, lineWidth, 1)];<br>line.backgroundColor = customColor;<br>[self.subviews[0] addSubview:line];</p>
-<ol>
-<li>添加饼图相对应提示文字</li>
-</ol>
-<p>// 添加文字<br>UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(X, Y - 15, lineWidth, 30)];<br>label.font = [UIFont systemFontOfSize:13];<br>label.textColor = customColor;<br>label.numberOfLines = 0;<br>label.text = type_names[i];<br>label.attributedText = [self setupAttriLabelWithTitleStr:type_names[i] ValueStr:[NSString stringWithFormat:@”%@”, targetValues[i]]];<br>[self.subviews[0] addSubview:label];<br>if (X &lt; point.x) { // 饼图左侧<br>label.textAlignment = NSTextAlignmentLeft;<br>} else {<br>label.textAlignment = NSTextAlignmentRight;<br>}</p>
-<p>/**</p>
-<ul>
-<li>label 的富文本布局<br>*</li>
-<li>titleStr 标题</li>
-<li>ValueStr 值<br>*/</li>
-</ul>
-<ul>
-<li>(NSMutableAttributedString <em>)setupAttriLabelWithTitleStr:(NSString </em>)titleStr ValueStr:(NSString *)valueStr {</li>
-</ul>
-<p>NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@”%@\n%@”, titleStr, valueStr]];<br>[string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:12] range:NSMakeRange(titleStr.length+1, valueStr.length)];<br>return string;<br>}</p>
-<ol>
-<li>空心展示饼图</li>
-</ol>
-<p>// 画一个圆, 用来空心(如果满圆则可以不要这块)<br>UIBezierPath <em>radiusPath = [UIBezierPath bezierPathWithArcCenter:point radius:radius </em> 0.3 startAngle:0 endAngle:2<em>M_PI clockwise:YES];<br>[radiusPath addLineToPoint:point];<br>[radiusPath closePath];<br>CAShapeLayer </em>shapeLayer = [CAShapeLayer layer];<br>shapeLayer.lineWidth = 1;<br>shapeLayer.fillColor = [UIColor whiteColor].CGColor;<br>shapeLayer.path = radiusPath.CGPath;<br>[self.layer addSublayer:shapeLayer];</p>
-<ol>
-<li>露出方法,在所需控制器里调用即可</li>
-</ol>
-<p>/**</p>
-<ul>
-<li>画饼状图</li>
-<li>@param type_names   分类名称值</li>
-<li>@param targetValues 所有目标值<br>*/</li>
-</ul>
-<ul>
-<li>(void)drawPieChartViewWithType_Names:(NSMutableArray <em>)type_names TargetValues:(NSMutableArray </em>)targetValues;</li>
-</ul>
-<p>初始化:</p>
-<p>// 饼图相关<br>@property (strong, nonatomic) ZLBezierPieView <em>pieChartView;<br>@property (strong, nonatomic) NSMutableArray </em>type_names; // 类型名称<br>@property (strong, nonatomic) NSMutableArray *type_values; // 数据值</p>
-<p>懒加载:</p>
-<p>#pragma mark - 懒加载</p>
-<p>// 饼图类型名称</p>
-<ul>
-<li>(NSMutableArray *)type_names {<br>if (!_type_names) {<br>_type_names = [NSMutableArray array];<br>_type_names = [NSMutableArray arrayWithArray:@[@”主粮系列”,@”零食世界”,@”益智玩具”,@”衣服狗窝”,@”保健医用”,@”活体”,@”日用系列”]];<br>}<br>return _type_names;<br>}</li>
-</ul>
-<p>// 饼图类型数据</p>
-<ul>
-<li>(NSMutableArray *)type_values {<br>if (!_type_values) {<br>_type_values = [NSMutableArray array];<br>_type_values = [NSMutableArray arrayWithArray:@[@”100”,@”100”,@”100”,@”200”,@”200”,@”100”,@”200”]];</li>
-</ul>
-<p>}<br>return _type_values;<br>}</p>
-<p>饼图画布初始化:</p>
-<p>// 饼图画布初始化<br>_pieChartView = [ZLBezierPieView initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 250)];<br>_pieChartView.backgroundColor = [UIColor clearColor];<br>[self.view addSubview:_pieChartView];<br>// 饼图<br>[_pieChartView drawPieChartViewWithType_Names:self.type_names TargetValues:self.type_values];</p>
-<p>这个时候就可以测试看效果了.</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/23/iOS后台下载及管理库/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="sadmile">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tec_张鲲">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/23/iOS后台下载及管理库/" itemprop="url">iOS后台下载及管理库</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-23T13:36:39+08:00">
-                2017-11-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>iOS 后台下载及管理库</p>
-<p>2017-11-23 LeavesLife Cocoa开发者社区</p>
-<p>说起下载第一个想起的就是ASI。一年前接手的新项目是核心功能是视频相关业务，在修改和解决视频下载相关的问题的时候让我体会到了ASI的下载的强大。后来新需求需要视频后台下载，使用NSURLSession的时候，更加深刻的体会到了ASI的强大好用。</p>
-<p>后来替换下载的时候的原因：</p>
-<p>ASI开启后台下载功能，在iOS10的设备上，只能下载三分钟，然后就处于休眠状态<br>AFN下载也是三分钟<br>测试后台下载的时候，不要用模拟器，使用用真机。模拟器APP处于后台时不会休眠。</p>
-<p>NSURLSession的特点简介</p>
-<p>通过NSURLSession创建的后台下载任务，保证了APP在后台或者退出的状态下，依然能进行下载任务，下载完成后通过唤醒APP，来将下载完成的数据保存到特定的位置。</p>
-<p>在APP处于后台、锁屏状态下依然能后下载<br>最强大的是：APP在手动退出以及闪退后的状态下依然能够进行下载任务</p>
-<p>NSURLSession</p>
-<p>创建下载session</p>
-<p>NSString <em>bundleId = [[[NSBundle mainBundle] infoDictionary] objectForKey:@”CFBundleIdentifier”];<br>NSString </em>identifier = [NSString stringWithFormat:@”%@.BackgroundSession”, bundleId];<br>NSURLSessionConfiguration* sessionConfig = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:identifier];<br>session = [NSURLSession sessionWithConfiguration:sessionConfig<br>delegate:self<br>delegateQueue:[NSOperationQueue mainQueue]];</p>
-<p>在创建下载session的时候，需要一个下载标识，该标识需要在整个个系统内保证唯一，所以使用APP的bundle id。<br>sessionConfig.allowsCellularAccess 控制是否可以通过蜂窝网络下载</p>
-<p>当APP手动退出或者闪退后，重新启动时获取正在下载的tasks</p>
-<p>NSMutableDictionary <em>dictM = [self.downloadSession valueForKey:@”tasks”];<br>[dictM enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL </em> _Nonnull stop) {</p>
-<p>}];</p>
-<p>AppDelegate后台下载回调</p>
-<p>当APP处于后台下载状态时，需要处理下载完成后的数据的回调，这里就涉及了一个AppDelegate中的一个特别重要的回调</p>
-<p>-(void)application:(UIApplication <em>)application handleEventsForBackgroundURLSession:(NSString </em>)identifier completionHandler:(void (^)(void))completionHandler{<br>NSLog(@”%s”, <strong>func</strong>);<br>}</p>
-<p>该代理方法使用场景分析(详细分析过程见下面)：</p>
-<p>不实现该代理方法，手动进入App调用相关代理方法，部分情况下异常<br>实现该方法，不执行completionHandler，某一下载任务完成后唤醒App，继续其它下载任务，异常<br>实现该方法，执行completionHandler，某一下载任务完成后唤醒App，继续其它下载任务，一切正常</p>
-<p>相关操作</p>
-<p>1.创建下载任务:其实通过session创建的任务是NSURLSessionDownloadTask的子类__NSCFBackgroundDownloadTask，是苹果的私有API。</p>
-<p>NSURL <em>downloadURL = [NSURL URLWithString:downloadURLString];<br>NSURLRequest </em>request = [NSURLRequest requestWithURL:downloadURL];<br>NSURLSessionDownloadTask *downloadTask = [self.downloadSession downloadTaskWithRequest:request];<br>[downloadTask resume];</p>
-<p>2.暂停下载:downloadTask有多种办法去暂停，但是我们选择有resume的下载方法，可以更加方便我们管理和多次暂停继续。</p>
-<p>[downloadTask cancelByProducingResumeData:^(NSData * resumeData) {<br>}];</p>
-<p>3.继续下载:通过resumeData继续下载。</p>
-<p>NSURLSessionDownloadTask *downloadTask = [self.downloadSession downloadTaskWithResumeData:data];<br>[downloadTask resume];</p>
-<p>4.取消或者删除下载</p>
-<p>[downloadTask cancel];</p>
-<p>相关代理方法说明</p>
-<p>1.下载任务开始后，下载文件的进度回调方法。bytesWritten 某一断点续传过程中已经下载的数据大小， totalBytesWritten 已经下载的文件的大小；totalBytesExpectedToWrite当前需要下载的文件的大小</p>
-<ul>
-<li>(void)URLSession:(NSURLSession <em>)session<br>downloadTask:(NSURLSessionDownloadTask </em>)downloadTask<br>didWriteData:(int64_t)bytesWritten<br>totalBytesWritten:(int64_t)totalBytesWritten<br>totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{</li>
-</ul>
-<p>}</p>
-<p>2.下载任务继续开始下载时的回调方法</p>
-<ul>
-<li>(void)URLSession:(NSURLSession <em>)session<br>downloadTask:(NSURLSessionDownloadTask </em>)downloadTask<br>didResumeAtOffset:(int64_t)fileOffset<br>expectedTotalBytes:(int64_t)expectedTotalBytes {</li>
-</ul>
-<p>}</p>
-<p>3.当资源发生重定向时回调的方法。NSURLSession内部自己处理定向回调</p>
-<ul>
-<li>(void)URLSession:(NSURLSession <em>)session task:(NSURLSessionTask </em>)task<br>willPerformHTTPRedirection:(NSHTTPURLResponse <em>)response<br>newRequest:(NSURLRequest </em>)request<br>completionHandler:(void (^)(NSURLRequest * _Nullable))completionHandler{</li>
-</ul>
-<p>}</p>
-<p>讲个小故事：去年元旦左右，我们是使用ASI下载视频的，甘肃的一个用户反馈，视频死活不能下载。但是我们在公司网络，国外VPN，4G，家里的网络测试下载没有问题，并且进行n次的测试，没有复现该问题，后来只能只作罢。然后过年回家，腊月30到家的，和家人吃年夜饭过后，看春晚，实在没意思，突然想起这个问题，然后就测试代码，我去，还真的是个必现的bug，死活下载不了。卡断点，调试一会后，发现下载资源URL被302重定向了，然后我们项目中的以前集成ASI，并不支持重定向，最后在失败的回调用，判断了下，如果是重定向，拿到新的URL重新去下载，想想也是坑啊。 下载的资源经过cdn加速后，猜测cdn在不同的region做了不同的处理。然后北京没事，其它的地域有可能重定向了。当时改完代后有点小开心， 因为怕同事说我猿气太重，所以在公司提交的代码…</p>
-<p>4.当下载任务完成后的代理回调方法，回调的参数location是下载完成后的文件，在沙盒当中存在的路径</p>
-<ul>
-<li>(void)URLSession:(NSURLSession <em>)session<br>downloadTask:(NSURLSessionDownloadTask </em>)downloadTask<br>didFinishDownloadingToURL:(NSURL *)location{</li>
-</ul>
-<p>}</p>
-<p>5.假如在后台下载完成的回调，会触发该回调方法。</p>
-<ul>
-<li>(void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session{<br>}</li>
-</ul>
-<p>6.下载失败后的回调。暂停，停止，失败都会触发。区别是：正常状态下的暂停会回调resumeData，如果resumeData不为空的话我们需要保存该数据，方便下次继续。</p>
-<ul>
-<li>(void)URLSession:(NSURLSession <em>)session<br>task:(NSURLSessionTask </em>)task<br>didCompleteWithError:(NSError *)error{<br>}</li>
-</ul>
-<p>后台下载相关回调</p>
-<p>AppDelegate 回调方法3种情况分析：</p>
-<ol>
-<li>不实现代理方法<br>当不实现AppDelegate代理方法的时候，简单的下载是没有任何问题。NSURLSession下载完成后相关代理方法执行顺序如图：</li>
-</ol>
-<p>代理调用顺序</p>
-<p>只有手动将后台的App进入前台后会调用成功的回调，处理相关的数据。假如有3个下载任务则会回调3次URLSession:downloadTask:didFinishDownloadingToURL:方法。</p>
-<p>缺点和问题：</p>
-<p>如果下载完成后，不进入前台或者手动杀死进程，则丢失下载数据<br>等待下载的任务无法继续下载<br>下载完成后，在后台无法使用本地通知</p>
-<ol>
-<li>实现代理方法，不执行completionHandler</li>
-</ol>
-<p>AppDelegate 方法-(void)application:(UIApplication <em>)application handleEventsForBackgroundURLSession:(NSString </em>)identifier completionHandler:(void (^)(void))completionHandler completionHandler 作用：</p>
-<p>首先看苹果SDK的解释：</p>
-<p>// Applications using an NSURLSession with a background configuration may be launched or resumed in the background in order to handle the<br>// completion of tasks in that session, or to handle authentication. This method will be called with the identifier of the session needing<br>// attention. Once a session has been created from a configuration object with that identifier, the session’s delegate will begin receiving<br>// callbacks. If such a session has already been created (if the app is being resumed, for instance), then the delegate will start receiving<br>// callbacks without any action by the application. You should call the completionHandler as soon as you’re finished handling the callbacks.</p>
-<p>最后两句是说明completionHandler的，大概意思是：回调callbacks，只要session创建将会开始接收到。回调callbacks没有对你的应用程序进行任何的处理，一旦完成处理callbacks，你应该调用completionHandler。</p>
-<p>英语不好感觉说的云里雾里的。callbacks应该是暂停继续任务时受到的代理方法。说的是我们完成下载任务后应该调用completionHandler</p>
-<p>completionHandler作用测试代理：</p>
-<p>#pragma mark - test code</p>
-<ul>
-<li>(void)applicationWillResignActive:(UIApplication *)application{</li>
-</ul>
-<p>[self testTimer];<br>NSLog(@”%s”,<strong>func</strong>);<br>}</p>
-<ul>
-<li><p>(void)applicationDidBecomeActive:(UIApplication *)application {<br>[self.timer invalidate];<br>self.timer = nil;<br>self.duration = 0;<br>NSLog(@”%s”, <strong>func</strong>);<br>}</p>
-</li>
-<li><p>(void)testTimer {<br>self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerRun) userInfo:nil repeats:true];<br>[self.timer fire];<br>}</p>
-</li>
-<li><p>(void)timerRun {<br>_duration += 1;<br>NSLog(@”%zd”, _duration);<br>}</p>
-</li>
-</ul>
-<p>completionHandler具体作用：</p>
-<p>这个回调的作用有点牛皮。通过上面代理可以测试出completionHandler，在第一个后台下载任务完成时回调，这时后台App已经被唤醒，定时器开始输出计时秒数。然后其它的下载任务完成时不会再次回调该方法。所有下载任务完成时，没有处理completionHandler计时器继续运行。 调用执行时completionHandler计时器停止运行，App继续处于休眠状态。</p>
-<p>虽然不知道completionHandler做了哪些处理，但是通过测试现象得出大概的作用。他用来控制后台的App被唤醒后继续处于休眠状态，节约系统资源。</p>
-<p>所以不执行completionHandler App如果不重新启动，处于后台时会一直在运行状态。下载任务正常。</p>
-<ol>
-<li>实现代理方法，执行completionHandler</li>
-</ol>
-<p>上面我们分析了completionHandler大概作用。所以所有后台任务下载完成后调用completionHandler，是App处于正常的状态。相关代理调用顺序：</p>
-<p>代理调用顺序</p>
-<p>completionHandler调用时机：<br>所有的下载任务下载完成后调用。感兴趣的可以看YCDowloadSession下载库对completionHandler的处理逻辑。</p>
-<p>YCDownloadSession</p>
-<p>YCDownloadSession是我写的一个视频后台下载的库。里面拥有我对视频下载的详细的处理过程和管理的库。</p>
-<p>该视频下载库主要有四个核心类：YCDownloadSession，YCDownloadTask，YCDownloadItem，YCDownloadManager</p>
-<p>YCDownloadSession：对NSURLSession的进一步分装，是一个单例，所有的下载任务都是由其生成和管理。是最主要的核心类。实现了下载的代理方法，通过一个可下载的url，生成一个YCDownloadTask，并且将该task的所有数据进行实时存储。<br>YCDownloadTask 将YCDownloadSession里的代理方法进一步封装和扩展，保存session生成和所需要的一些下载信息和数据。<br>YCDownloadItem 存放需要下载的视频的信息<br>YCDownloadManager 管理下载视频操作，生成一个YCDownloadItem，并且实时保存相关信息(下载状态，文件大小，已下载文件大小，以及其它的需要和UI交互的数据)，然后调用YCDownloadSession去下载该视频。</p>
-<p>图解</p>
-<p>YCDownloadSession结构图解</p>
-<p>YCDownloadSession和YCDownloadTask是两个核心类。与YCDownloadManager和YCDownloadItem相互独立。大家和可以通过YCDownloadSession和YCDownloadTask自定义需要的下载管理类的信息类。</p>
-<p>使用效果图</p>
-<p>单文件下载测试</p>
-<p>单文件下载</p>
-<p>多视频下载测试</p>
-<p>多视频下载</p>
-<p>通知</p>
-<p>通知</p>
-<p>用法</p>
-<p>1.AppDelegate设置后台下载成功回调方法</p>
-<p>-(void)application:(UIApplication <em>)application handleEventsForBackgroundURLSession:(NSString </em>)identifier completionHandler:(void (^)(void))completionHandler{<br>[[YCDownloadSession downloadSession] addCompletionHandler:completionHandler];<br>}</p>
-<p>如果想要多个任务在后台同时进行，必须要进行设置上述的代理方法。YCDownloadSession内部会处理该回调方法(completionHandler的作用将会在blog里详细说明)，内部处理逻辑：</p>
-<p>//等task delegate方法执行完成后去判断该逻辑<br>//URLSessionDidFinishEventsForBackgroundURLSession 方法在后台执行一次，所以在此判断执行completedHandler<br>if (status == YCDownloadStatusFinished) {</p>
-<p>if ([self allTaskFinised]) {<br>[[NSNotificationCenter defaultCenter] postNotificationName:kDownloadAllTaskFinishedNoti object:nil];<br>//所有的任务执行结束之后调用completedHanlder<br>if (self.completedHandler) {<br>NSLog(@”completedHandler”);<br>self.completedHandler();<br>self.completedHandler = nil;<br>}<br>}</p>
-<p>}</p>
-<p>2.直接使用YCDownloadSession下载文件</p>
-<p>self.downloadURL = @”<a href="http://dldir1.qq.com/qqfile/QQforMac/QQ_V6.0.1.dmg" target="_blank" rel="noopener">http://dldir1.qq.com/qqfile/QQforMac/QQ_V6.0.1.dmg</a>“;</p>
-<ul>
-<li>(void)start {<br>[[YCDownloadSession downloadSession] startDownloadWithUrl:self.downloadURL delegate:self saveName:nil];<br>}</li>
-<li><p>(void)resume {<br>[[YCDownloadSession downloadSession] resumeDownloadWithUrl:self.downloadURL delegate:self saveName:nil];<br>}</p>
-</li>
-<li><p>(void)pause {<br>[[YCDownloadSession downloadSession] pauseDownloadWithUrl:self.downloadURL];<br>}</p>
-</li>
-<li><p>(void)stop {<br>[[YCDownloadSession downloadSession] stopDownloadWithUrl:self.downloadURL];<br>}</p>
-</li>
-</ul>
-<p>//代理</p>
-<ul>
-<li>(void)downloadProgress:(YCDownloadTask <em>)task downloadedSize:(NSUInteger)downloadedSize fileSize:(NSUInteger)fileSize {<br>self.progressLbl.text = [NSString stringWithFormat:@”%f”,(float)downloadedSize / fileSize </em> 100];<br>}</li>
-</ul>
-<ul>
-<li>(void)downloadStatusChanged:(YCDownloadStatus)status downloadTask:(YCDownloadTask *)task {<br>if (status == YCDownloadStatusFinished) {<br>self.progressLbl.text = @”download success!”;<br>}else if (status == YCDownloadStatusFailed){<br>self.progressLbl.text = @”download failed!”;<br>}<br>}</li>
-</ul>
-<p>3.使用自定义的管理类(YCDownloadManager 视频类型文件专用下载管理类)下载。假如视频下载完成，自定义保存名称，那么使用fileId来标识。如果fileId为空使用下载URL的MD5的值来保存</p>
-<p>/**<br>开始/创建一个后台下载任务。downloadURLString作为整个下载任务的唯一标识。<br>下载成功后用downloadURLString的MD5的值来保存<br>文件后缀名取downloadURLString的后缀名，[downloadURLString pathExtension]</p>
-<p>*/</p>
-<ul>
-<li>(void)startDownloadWithUrl:(NSString <em>)downloadURLString fileName:(NSString </em>)fileName imageUrl:(NSString *)imagUrl;</li>
-</ul>
-<p>/**<br>开始/创建一个后台下载任务。fileId作为整个下载任务的唯一标识。<br>下载成功后用fileId来保存, 要确保fileId唯一<br>文件后缀名取downloadURLString的后缀名，[downloadURLString pathExtension]</p>
-<p>*/</p>
-<ul>
-<li>(void)startDownloadWithUrl:(NSString <em>)downloadURLString fileName:(NSString </em>)fileName imageUrl:(NSString <em>)imagUrl fileId:(NSString </em>)fileId;</li>
-</ul>
-<p>4.蜂窝煤是否允许下载的方法(YCDownloadSession, YCDownloadManager)</p>
-<p>YCDownloadSession:<br>/**<br>是否允许蜂窝煤网络下载，以及网络状态变为蜂窝煤是否允许下载，必须把所有的downloadTask全部暂停，然后重新创建。否则，原先创建的<br>下载task依旧在网络切换为蜂窝煤网络时会继续下载</p>
-<p>@param isAllow 是否允许蜂窝煤网络下载<br>*/</p>
-<ul>
-<li>(void)allowsCellularAccess:(BOOL)isAllow;</li>
-</ul>
-<p>YCDownloadManager:<br>/<em>*<br>获取当前是否允许蜂窝煤访问状态
-</em>/</p>
-<ul>
-<li>(BOOL)isAllowsCellularAccess;</li>
-</ul>
-<p>5.设置最大同时进行下载的任务数</p>
-<p>YCDownloadSession:<br>/<em>*<br>设置下载任务的个数，最多支持3个下载任务同时进行。<br>NSURLSession最多支持5个任务同时进行<br>但是5个任务，在某些情况下，部分任务会出现等待的状态，所有设置最多支持3个
-</em>/<br>@property (nonatomic, assign) NSInteger maxTaskCount;</p>
-<p>YCDownloadManager:<br>/<em>*<br>设置下载任务的个数，最多支持3个下载任务同时进行。
-</em>/</p>
-<ul>
-<li>(void)setMaxTaskCount:(NSInteger)count;</li>
-</ul>
-<p>6.下载完成的通知</p>
-<p>本地通知(YCDownloadManager实现)：</p>
-<p>/<em>*<br>本地通知的开关，默认是false,可以根据通知名称自定义通知类型
-</em>/</p>
-<ul>
-<li>(void)localPushOn:(BOOL)isOn;</li>
-</ul>
-<p>当前session中所有的任务下载完成的通知。 不包括失败、暂停的任务: kDownloadAllTaskFinishedNoti</p>
-<p>某一的任务下载完成的通知object为YCDownloadItem对象：kDownloadTaskFinishedNoti</p>
-<p>7.某一任务下载的状态发生变化的通知: kDownloadStatusChangedNoti 主要用于状态改变后，及时保存下载数据信息。</p>
-<p>GitHub连接<br><a href="https://github.com/onezens/YCDownloadSession" target="_blank" rel="noopener">https://github.com/onezens/YCDownloadSession</a></p>
-<p>欢迎各位关注该库，如果你有任何问题请issues我，将会随时更新新功能和解决存在的问题。</p>
-<p>遇到的一些问题</p>
-<p>这里总结下载开发YCDownloadSession下载库中碰到的一些问题</p>
-<p>苹果下载相关SDK关系图</p>
-<p>1.下载资源重定向的问题</p>
-<p>YCDownloadSession 内部标识一下下载task的时候，使用的下载资源的URL来标识。如果该资源被301/302重定向到一个另一个URL后，会存在两个URL。标识用的URL在代理回调的NSURLSessionTask或者NSURLSessionDownloadTask的currentRequest中取的url，这样就出现了一个问题，重定向后通过URL拿不到下载的task；originalRequest属性可以拿到重定向前的URL使用该属性解决这个问题。苹果下载相关SDK关系图可看它们之间关系。</p>
-<p>2.断点续传</p>
-<p>NSURLSessionDownloadTask的断点续传是由其内部自己控制实现。在暂停某一下载任务的时候有两个方法：</p>
-<p>cancel内部自己控制断点续传数据，拿到对应task可以继续下载。如果拿不到，不可继续。<br>cancelByProducingResumeData:^(NSData * resumeData) {}通过session继续下载[downloadSession downloadTaskWithResumeData:data]，需要自己保存处理resumeData，可以满足很多情况下的续传。</p>
-<p>3.部分下载资源不可断点续传</p>
-<p>YCDownloadSession Demo中的测试用的下载资源来自百度视频，可以正常下载。网易视频的资源和部分响应头不完整的资源在暂停下载之后拿不到resumeData而回调失败的情况。</p>
-<p>百度视频资源：<a href="https://vd1.bdstatic.com/mda-hiqmm8s10vww26sx/mda-hiqmm8s10vww26sx.mp4\?playlist\=%5B%22hd%22%5D\&amp;auth_key\=1506158514-0-0-6cde713ec6e6a15bd856fbb4f2564658\&amp;bcevod_channel\=searchbox_feed" target="_blank" rel="noopener">https://vd1.bdstatic.com/mda-hiqmm8s10vww26sx/mda-hiqmm8s10vww26sx.mp4\?playlist\=%5B%22hd%22%5D\&amp;auth_key\=1506158514-0-0-6cde713ec6e6a15bd856fbb4f2564658\&amp;bcevod_channel\=searchbox_feed</a></p>
-<p>响应头：</p>
-<p>通过Mac Terminal自带的curl命令获取响应头 curl -I <a href="https://vd1.bdstatic.com/mda-hiqmm8s10vww26sx/mda-hiqmm8s10vww26sx.mp4\?playlist\=%5B%22hd%22%5D\&amp;auth_key\=1506158514-0-0-6cde713ec6e6a15bd856fbb4f2564658\&amp;bcevod_channel\=searchbox_feed" target="_blank" rel="noopener">https://vd1.bdstatic.com/mda-hiqmm8s10vww26sx/mda-hiqmm8s10vww26sx.mp4\?playlist\=%5B%22hd%22%5D\&amp;auth_key\=1506158514-0-0-6cde713ec6e6a15bd856fbb4f2564658\&amp;bcevod_channel\=searchbox_feed</a></p>
-<p>HTTP/1.1 200 OK<br>Server: bfe/1.0.8.13-sslpool-patch<br>Date: Tue, 10 Oct 2017 07:43:02 GMT<br>Content-Type: video/mp4<br>Content-Length: 19727666<br>Connection: keep-alive<br>ETag: “125b8b749037921ccd03120fb0f90189”<br>Last-Modified: Fri, 15 Sep 2017 09:42:18 GMT<br>Accept-Ranges: bytes<br>Content-MD5: EluLdJA3khzNAxIPsPkBiQ==<br>x-bce-debug-id: MTAuMTgxLjk5LjE0OlNhdCwgMTYgU2VwIDIwMTcgMTE6MzA6MzYgQ1NUOjE4MzY0NTgzMjM=<br>x-bce-request-id: b3c7857b-b71a-4cd4-ab98-8676319dc8cb<br>x-bce-storage-class: STANDARD<br>Ohc-Response-Time: 1 0 0 0 0 94<br>Access-Control-Allow-Origin: *<br>Cache-Control: max-age=2592000</p>
-<p>网易视频资源：<a href="http://flv2.bn.netease.com/videolib3/1706/07/gDNOH8458/HD/gDNOH8458-mobile.mp4" target="_blank" rel="noopener">http://flv2.bn.netease.com/videolib3/1706/07/gDNOH8458/HD/gDNOH8458-mobile.mp4</a></p>
-<p>响应头：</p>
-<p>curl -I <a href="http://flv2.bn.netease.com/videolib3/1706/07/gDNOH8458/HD/gDNOH8458-mobile.mp4" target="_blank" rel="noopener">http://flv2.bn.netease.com/videolib3/1706/07/gDNOH8458/HD/gDNOH8458-mobile.mp4</a></p>
-<p>HTTP/1.1 200 OK<br>Expires: Thu, 09 Nov 2017 07:00:42 GMT<br>Date: Tue, 10 Oct 2017 07:00:42 GMT<br>Server: nginx<br>Content-Length: 43260722<br>Cache-Control: max-age=2592000<br>Content-Type: video/mp4<br>Via: 1.1 zhshx117:1 (Cdn Cache Server V2.0)[11 200 2], 1.1 xxz195:3 (Cdn Cache Server V2.0)[94 200 2], 1.1 PStjdgdx3jx152:4 (Cdn Cache Server V2.0)[154 200 2]<br>Connection: keep-alive<br>cache: state<br>cdn-user-ip: 101.96.129.122<br>cdn-ip: 42.81.28.152<br>cdn-source: chinanetcenter</p>
-<p>响应头异常视频资源：<a href="https://www.zmzfile.com:9043/rt/route\?fileid\=152260954bdfa322725ba58df2ab1e2c2e3a6050" target="_blank" rel="noopener">https://www.zmzfile.com:9043/rt/route\?fileid\=152260954bdfa322725ba58df2ab1e2c2e3a6050</a></p>
-<p>响应头：</p>
-<p>curl -I <a href="https://www.zmzfile.com:9043/rt/route\?fileid\=152260954bdfa322725ba58df2ab1e2c2e3a6050" target="_blank" rel="noopener">https://www.zmzfile.com:9043/rt/route\?fileid\=152260954bdfa322725ba58df2ab1e2c2e3a6050</a></p>
-<p>HTTP/1.1 302 Found<br>Server: nginx/1.12.1<br>Date: Tue, 10 Oct 2017 07:53:23 GMT<br>Content-Type: text/plain; charset=utf-8<br>Connection: keep-alive<br>Location: <a href="http://175.6.228.3:9021?id=152260954bdfa322725ba58df2ab1e2c2e3a6050" target="_blank" rel="noopener">http://175.6.228.3:9021?id=152260954bdfa322725ba58df2ab1e2c2e3a6050</a><br>Ts: 1716489</p>
-<p>继续取302资源的响应头<br>curl -I <a href="http://175.6.228.3:9021\?id\=152260954bdfa322725ba58df2ab1e2c2e3a6050" target="_blank" rel="noopener">http://175.6.228.3:9021\?id\=152260954bdfa322725ba58df2ab1e2c2e3a6050</a><br>Ts: 1716489<br>curl: (52) Empty reply from server</p>
-<p>Xcode 输出NSURLSessionDownloadTask的response信息：</p>
-<p><nshttpurlresponse: 0x13cee64d0=""> { URL: <a href="http://60.211.203.204:9031/?id=152260954bdfa322725ba58df2ab1e2c2e3a6050" target="_blank" rel="noopener">http://60.211.203.204:9031?id=152260954bdfa322725ba58df2ab1e2c2e3a6050</a> } {<br>status code: 200,<br>headers {<br>Connection = Close;<br>“Content-Length” = 247272762;<br>Server = p4pcacher;<br>} }</nshttpurlresponse:></p>
-<p>目前这个问题还正在探索解决的办法中。目前来看断点续传是系统内部实现的，苹果SDK没有提供一些相关的操作，如果出现类似的问题，那么只能和后台沟通，解决响应头相关的信息来解决这个问题。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/23/Hexo免费搭建一个属于自己的博客/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="sadmile">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tec_张鲲">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/23/Hexo免费搭建一个属于自己的博客/" itemprop="url">Hexo免费搭建一个属于自己的博客</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-23T11:54:05+08:00">
-                2017-11-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Hexo免费搭建一个属于自己的博客</p>
-<p>2017-11-23 my_杨哥 Cocoa开发者社区</p>
-<p>作为一个多年的iOS开发者，而且喜欢自己没事的时候写点东西以供他人分享，都想要有一个属于自己的、网址上带有自己名字的博客，有的人用简书或者GitHub来写文章，不过那些都是第三方平台，不是自己的，只有属于自己的一个博客才会显得很酷很装逼有没有??，OK接下来咱们开始搭建吧！</p>
-<p>一、前言</p>
-<p>该博客用的是Hexo框架，基于Node.js，搭建博客首先需要有一个GitHub账号并且配置了SSH Keys（申请步骤这里就不介绍了，网上教程很多），然后在GitHub里创建一个名为username.github.io的仓库，还需要安装Git、安装Node.js、安装Hexo</p>
-<p>二、准备工作</p>
-<p>1、创建GitHub仓库</p>
-<p>创建一个名为username.github.io的仓库<br>在GitHub中新建仓库相信你们都会，点击New repository创建，注意：仓库名称一定是username.github.io这种格式，username替换一个你喜欢的名字。</p>
-<p>username.github.io</p>
-<p>2、安装Git</p>
-<p>如果已安装可跳过</p>
-<p>方法一、通过HomeBrew来安装</p>
-<p>先安装HomeBrew（如果已安装可跳过）<br>终端执行命令   $ /usr/bin/ruby -e “$(curl -fsSL <a href="https://raw.githubusercontent.com/Homebrew/install/master/install" target="_blank" rel="noopener">https://raw.githubusercontent.com/Homebrew/install/master/install</a>)”<br>然后安装git    $ brew install git</p>
-<p>方法二、你也可以通过下载安装程序来安装</p>
-<p>验证：执行git –version如果输出类似git version 2.15.0说明安装成功了</p>
-<p>3、安装Node.js</p>
-<p>先安装nvm，这是Node.js版本管理器，可以轻松切换Node.js版本。 这里有两种方式安装。如果使用curl的方式安装，安装完成之后一定要重启终端。</p>
-<p>方法一、通过HomeBrew来安装（推荐）</p>
-<p>$ brew install node</p>
-<p>方法二、curl安装方式</p>
-<p>$ curl <a href="https://raw.github.com/creationix/nvm/master/install.sh" target="_blank" rel="noopener">https://raw.github.com/creationix/nvm/master/install.sh</a> | sh<br>安装完成后，重启终端并执行下列命令即可安装 Node.js<br>$ nvm install stable</p>
-<p>验证：执行npm –version如果输出类似5.5.1说明安装成功了</p>
-<p>4、安装Hexo</p>
-<p>所有必备的应用程序安装完成后，即可使用 npm 安装 Hexo</p>
-<p>$ npm install -g hexo-cli</p>
-<p>三、建站</p>
-<p>1、创建资源</p>
-<p>安装 Hexo 完成后，在你喜欢的目录下新建一个文件夹命名为username（替换成你喜欢的名字），然后cd到username文件夹下</p>
-<p>$ cd username<br>$ hexo init<br>$ npm install</p>
-<p>执行完毕后你将看到在你刚创建的文件夹下会有很多资源</p>
-<p>username</p>
-<p>2、基础配置</p>
-<p>接下来打开username下的_config.yml文件（上图中的第一个文件），修改一下里面几个关键的信息，修改完记得保存，注意：冒号后面要有空格。</p>
-<p>title: my_杨哥      //你博客的名字<br>author: Li Yang    //你的名字<br>language: zh-Hans  //语言-简体中文</p>
-<p>上面这3个字段是关键信息，如需修改其他信息请参考配置</p>
-<p>3、主题安装</p>
-<p>username下的themes文件夹中存放的是主题，默认的是landscape主题，如果你不喜欢可以安装其他主题。</p>
-<p>NexT主题是一套简约的主题，是目前使用最火的一个主题，下面我们安装一下该主题，你也可参考安装NexT。</p>
-<p>Hexo还有更多主题供你选择</p>
-<p>安装NexT主题：</p>
-<p>$ cd username        //进入到username文件夹下<br>$ git clone <a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">https://github.com/iissnan/hexo-theme-next</a> themes/next</p>
-<p>启用NexT主题：</p>
-<p>打开username下的_config.yml文件（上图中的第一个文件），找到theme字段将其值更改为next</p>
-<p>验证主题：</p>
-<p>注意：每次切换主题之后、验证主题之前都要清除 Hexo 的缓存</p>
-<p>$ hexo clean    //清除缓存</p>
-<p>开始验证：启动Hexo本地服务器</p>
-<p>$ hexo s</p>
-<p>然后你将会看到终端输出</p>
-<p>INFO  Hexo is running at <a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a>. Press Ctrl+C to stop.</p>
-<p>这行的意思是说你用浏览器打开 <a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> 便可看到你的博客了，这只是本地的测试，如果测试没问题就执行Ctrl+C退出去，此时该地址就不能访问了。</p>
-<p>OK，现在，你已经成功安装并启用了 NexT 主题。接下来就是对该主题的一些设置，详细可参考NexT主题设定</p>
-<p>四、写作</p>
-<p>以上所有的工作都完成了，并设置了一套你自己喜欢的主题样式，接下来就可以写博客了。</p>
-<p>1、新建一篇文章</p>
-<p>$ hexo new layout title</p>
-<p>layout：模板，如果不写将使用默认模板，一般不写，直接$ hexo new title</p>
-<p>title：文章标题，如果标题包含空格的话，请使用引号括起来。</p>
-<p>新建的文章将会存在username/source/_posts中，_posts就是默认模板，文章文件名称将会是title.md，接下来就可以打开该文件进行编辑写你的文章了。</p>
-<p>2、生成静态文件</p>
-<p>写完文章之后执行，来生成静态网页文件</p>
-<p>$ hexo g        //hexo generate的缩写</p>
-<p>3、启动本地服务器</p>
-<p>$ hexo s        //hexo server的缩写</p>
-<p>本地服务器启动完之后就如同上面验证主题一样，访问 <a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> 来验证一下你写的文章预览效果。</p>
-<p>4、部署网站</p>
-<p>安装部署工具</p>
-<p>$ npm install hexo-deployer-git –save</p>
-<p>安装完毕后打开username下的_config.yml文件，翻到最底部找到deploy节点编辑如下：</p>
-<p>deploy:<br>type: git<br>repository: <a href="https://github.com/YoungerLi/youngerli.github.io.git" target="_blank" rel="noopener">https://github.com/YoungerLi/youngerli.github.io.git</a><br>branch: master</p>
-<p>其中<a href="https://github.com/YoungerLi/youngerli.github.io.git就是你GitHub中创建的仓库地址，在这复制即可" target="_blank" rel="noopener">https://github.com/YoungerLi/youngerli.github.io.git就是你GitHub中创建的仓库地址，在这复制即可</a></p>
-<p>repository</p>
-<p>最后，部署网站</p>
-<p>$ hexo d        //hexo deploy的缩写</p>
-<p>第一次执行这一步的时候会让你输入你的GitHub的用户名及密码，输入正确无误后执行完毕，任何人就可以访问 <a href="https://youngerli.github.io" target="_blank" rel="noopener">https://youngerli.github.io</a> 进入你的博客了。</p>
-<p>以后每次写完文章之后依次执行以下命令就可以发布更新了</p>
-<p>$ hexo clean      // 清除缓存<br>$ hexo g          // 生成静态网页文件<br>$ hexo d          // 将本地博客发布到github</p>
-<p>五、更多</p>
-<p>添加阅读全文按钮</p>
-<p>因为在你的博客主页会有多篇文章，如果你想让你的文章只显示一部分，多余的可以点击阅读全文来查看，那么你需要在你的文章中添加</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/11/23/Hexo免费搭建一个属于自己的博客/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
           </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
 
-    
+          <span class="post-nav-divider"></span>
 
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/23/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="sadmile">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tec_张鲲">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/23/hello-world/" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+          <div class="post-nav-prev post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-23T11:37:15+08:00">
-                2017-11-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -1992,10 +1106,11 @@ SKNode.yxy_swizzleRemoveFromParent()
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -2003,6 +1118,10 @@ SKNode.yxy_swizzleRemoveFromParent()
 
 
           
+
+  
+
+
 
         </div>
         
@@ -2023,8 +1142,17 @@ SKNode.yxy_swizzleRemoveFromParent()
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -2068,6 +1196,22 @@ SKNode.yxy_swizzleRemoveFromParent()
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">2.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与-Runtime-交互"><span class="nav-number">3.</span> <span class="nav-text">与 Runtime 交互</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Objective-C-源代码"><span class="nav-number">3.1.</span> <span class="nav-text">Objective-C 源代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSObject-的方法"><span class="nav-number">3.2.</span> <span class="nav-text">NSObject 的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Runtime-的函数"><span class="nav-number">3.3.</span> <span class="nav-text">Runtime 的函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Runtime-基础数据结构"><span class="nav-number">4.</span> <span class="nav-text">Runtime 基础数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SEL"><span class="nav-number">4.1.</span> <span class="nav-text">SEL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#id"><span class="nav-number">4.2.</span> <span class="nav-text">id</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Class"><span class="nav-number">4.3.</span> <span class="nav-text">Class</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#realizeClass"><span class="nav-number">4.4.</span> <span class="nav-text">realizeClass</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Category"><span class="nav-number">4.5.</span> <span class="nav-text">Category</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Method"><span class="nav-number">4.6.</span> <span class="nav-text">Method</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ivar"><span class="nav-number">4.7.</span> <span class="nav-text">Ivar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#objc-property-t"><span class="nav-number">4.8.</span> <span class="nav-text">objc_property_t</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#protocol-t"><span class="nav-number">4.9.</span> <span class="nav-text">protocol_t</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IMP"><span class="nav-number">4.10.</span> <span class="nav-text">IMP</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息"><span class="nav-number">5.</span> <span class="nav-text">消息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#objc-msgSend-函数"><span class="nav-number">5.1.</span> <span class="nav-text">objc_msgSend 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法中的隐藏参数"><span class="nav-number">5.2.</span> <span class="nav-text">方法中的隐藏参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取方法地址"><span class="nav-number">5.3.</span> <span class="nav-text">获取方法地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态方法解析"><span class="nav-number">5.4.</span> <span class="nav-text">动态方法解析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息转发"><span class="nav-number">6.</span> <span class="nav-text">消息转发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#重定向"><span class="nav-number">6.1.</span> <span class="nav-text">重定向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转发"><span class="nav-number">6.2.</span> <span class="nav-text">转发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转发和多继承"><span class="nav-number">6.3.</span> <span class="nav-text">转发和多继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#替代者对象-Surrogate-Objects"><span class="nav-number">6.4.</span> <span class="nav-text">替代者对象(Surrogate Objects)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转发与继承"><span class="nav-number">6.5.</span> <span class="nav-text">转发与继承</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#健壮的实例变量-Non-Fragile-ivars"><span class="nav-number">7.</span> <span class="nav-text">健壮的实例变量 (Non Fragile ivars)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Objective-C-Associated-Objects"><span class="nav-number">8.</span> <span class="nav-text">Objective-C Associated Objects</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Method-Swizzling"><span class="nav-number">9.</span> <span class="nav-text">Method Swizzling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">10.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -2201,6 +1345,10 @@ SKNode.yxy_swizzleRemoveFromParent()
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 

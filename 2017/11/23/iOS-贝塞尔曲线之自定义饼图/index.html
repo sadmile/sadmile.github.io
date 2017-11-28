@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="项目中需要统计数据展现, 采用了饼图形式展现.如下图所示:  一、了解贝塞尔曲线相关概念 贝塞尔曲线相关概念: UIBezierPath ：画贝塞尔曲线的path类 UIBezierPath定义 ： 贝赛尔曲线的每一个顶点都有两个控制点，用于控制在该顶点两侧的曲线的弧度。 曲线的定义有四个点：起始点、终止点（也称锚点）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS-贝塞尔曲线之自定义饼图">
+<meta property="og:url" content="http://yoursite.com/2017/11/23/iOS-贝塞尔曲线之自定义饼图/index.html">
+<meta property="og:site_name" content="Tec_张鲲">
+<meta property="og:description" content="项目中需要统计数据展现, 采用了饼图形式展现.如下图所示:  一、了解贝塞尔曲线相关概念 贝塞尔曲线相关概念: UIBezierPath ：画贝塞尔曲线的path类 UIBezierPath定义 ： 贝赛尔曲线的每一个顶点都有两个控制点，用于控制在该顶点两侧的曲线的弧度。 曲线的定义有四个点：起始点、终止点（也称锚点）以及两个相互分离的中间点。滑动两个中间点，贝塞尔曲线的形状会发生变化。 UIBe">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/Users/sadmile/Downloads/WX20171123-141706.png">
+<meta property="og:updated_time" content="2017-11-28T09:27:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS-贝塞尔曲线之自定义饼图">
+<meta name="twitter:description" content="项目中需要统计数据展现, 采用了饼图形式展现.如下图所示:  一、了解贝塞尔曲线相关概念 贝塞尔曲线相关概念: UIBezierPath ：画贝塞尔曲线的path类 UIBezierPath定义 ： 贝赛尔曲线的每一个顶点都有两个控制点，用于控制在该顶点两侧的曲线的弧度。 曲线的定义有四个点：起始点、终止点（也称锚点）以及两个相互分离的中间点。滑动两个中间点，贝塞尔曲线的形状会发生变化。 UIBe">
+<meta name="twitter:image" content="http://yoursite.com/Users/sadmile/Downloads/WX20171123-141706.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/23/iOS-贝塞尔曲线之自定义饼图/"/>
+
+
+
+
+
+  <title>iOS-贝塞尔曲线之自定义饼图 | Tec_张鲲</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tec_张鲲</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">IOS 技术整理</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/23/iOS-贝塞尔曲线之自定义饼图/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sadmile">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tec_张鲲">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS-贝塞尔曲线之自定义饼图</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-23T13:41:42+08:00">
+                2017-11-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>项目中需要统计数据展现, 采用了饼图形式展现.如下图所示:</p>
+<p><img src="/Users/sadmile/Downloads/WX20171123-141706.png" alt=""></p>
+<p>一、了解贝塞尔曲线相关概念</p>
+<p>贝塞尔曲线相关概念:</p>
+<p>UIBezierPath ：画贝塞尔曲线的path类</p>
+<p>UIBezierPath定义 ： 贝赛尔曲线的每一个顶点都有两个控制点，用于控制在该顶点两侧的曲线的弧度。</p>
+<p>曲线的定义有四个点：起始点、终止点（也称锚点）以及两个相互分离的中间点。<br>滑动两个中间点，贝塞尔曲线的形状会发生变化。</p>
+<p>UIBezierPath：对象是CGPathRef数据类型的封装，可以方便的让我们画出矩形 、 椭圆 或者 直线和曲线的组合形状.</p>
+<p>使用贝塞尔曲线的基本步骤:</p>
+<p>（1）创建一个Bezier path对象。</p>
+<p>（2）使用方法moveToPoint:去设置初始线段的起点。</p>
+<p>（3）添加line或者curve去定义一个或者多个subpaths。</p>
+<p>（4）改变UIBezierPath对象跟绘图相关的属性。</p>
+<p>初始化方法：</p>
+<ul>
+<li>(instancetype)bezierPath;</li>
+</ul>
+<p>创建一个矩形:</p>
+<ul>
+<li>(instancetype)bezierPathWithRect:(CGRect)rect;</li>
+</ul>
+<p>创建圆形或者椭圆形:</p>
+<ul>
+<li>(instancetype)bezierPathWithOvalInRect:(CGRect)rect;</li>
+<li>(instancetype)bezierPathWithRoundedRect:(CGRect)rect cornerRadius:(CGFloat)cornerRadius; // rounds all corners with the same horizontal and vertical radius</li>
+<li>(instancetype)bezierPathWithRoundedRect:(CGRect)rect byRoundingCorners:(UIRectCorner)corners cornerRadii:(CGSize)cornerRadii;</li>
+<li>(instancetype)bezierPathWithArcCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise;</li>
+<li>(instancetype)bezierPathWithCGPath:(CGPathRef)CGPath;</li>
+</ul>
+<p>最基本的使用方法是：</p>
+<p>// 设置描绘的起点</p>
+<ul>
+<li>(void)moveToPoint:(CGPoint)point;</li>
+</ul>
+<p>// 画直线</p>
+<ul>
+<li>(void)addLineToPoint:(CGPoint)point;</li>
+</ul>
+<p>// 画曲线<br>// a.绘制二次贝塞尔曲线   分别对应终点和一个控制点</p>
+<ul>
+<li>(void)addQuadCurveToPoint:(CGPoint)endPoint controlPoint:(CGPoint)controlPoint</li>
+</ul>
+<p>// b.绘制三次贝塞尔曲线   分别对应终点和两个控制点</p>
+<ul>
+<li>(void)addCurveToPoint:(CGPoint)endPoint controlPoint1:(CGPoint)controlPoint1 controlPoint2:(CGPoint)controlPoint2;</li>
+</ul>
+<p>//  画圆弧</p>
+<ul>
+<li>(void)addArcWithCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise</li>
+</ul>
+<p>二:、自定义饼图的核心逻辑</p>
+<p>自定义饼图:</p>
+<p>针对上面的饼图, 实现主要思路:<br>1.初始化画布<br>2.bezierPath形成闭合的扇形路径<br>3.自定义饼图填充颜色<br>4.饼图的引出点及指引线<br>5.画引出直线<br>6.添加饼图相对应提示文字<br>7.空心展示饼图<br>8.露出方法,在所需控制器里调用即可</p>
+<ol>
+<li>初始化画布</li>
+</ol>
+<ul>
+<li>(instancetype)initWithFrame:(CGRect)frame {</li>
+</ul>
+<p>ZLBezierPieView *bezierCurveView = [[NSBundle mainBundle] loadNibNamed:@”ZLBezierPieView” owner:self options:nil].lastObject;<br>bezierCurveView.frame = frame;</p>
+<p>//背景视图<br>UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];<br>backView.backgroundColor = [UIColor clearColor];<br>[bezierCurveView addSubview:backView];</p>
+<p>myFrame = frame;<br>return bezierCurveView;<br>}</p>
+<ol>
+<li>bezierPath形成闭合的扇形路径</li>
+</ol>
+<p>UIBezierPath *bezierPath = [UIBezierPath bezierPathWithArcCenter:point<br>radius:radius<br>startAngle:startAngle                                                                 endAngle:endAngle<br>clockwise:YES];<br>[bezierPath addLineToPoint:point];<br>[bezierPath closePath];</p>
+<ol>
+<li>自定义饼图填充颜色</li>
+</ol>
+<p>// 可自定义饼图填充颜色(根据自己需求添加)<br>NSArray <em>redArray = @[@”46”,@”255”,@”62”,@”254”,@”253”,@”153”,@”110”, @”173”,@”223”,@”196”];<br>NSArray </em>greenArray = @[@”191”,@”48”,@”209”,@”199”,@”109”,@”208”,@”123”, @”110”,@”142”,@”193”];<br>NSArray *blueArray = @[@”238”,@”145”,@”185”,@”17”,@”31”,@”60”,@”254”, @”157”,@”36”,@”48”];</p>
+<p>// 填充色<br>UIColor *customColor = [UIColor colorWithRed:[[redArray objectAtIndex:i] intValue]/255.0  green:[[greenArray objectAtIndex:i] intValue]/255.0 blue:[[blueArray objectAtIndex:i] intValue]/255.0 alpha:1];</p>
+<p>// 渲染<br>CAShapeLayer *shapeLayer = [CAShapeLayer layer];<br>shapeLayer.lineWidth = 1;<br>// 填充色<br>shapeLayer.fillColor = customColor.CGColor;<br>shapeLayer.path = bezierPath.CGPath;<br>[self.layer addSublayer:shapeLayer];</p>
+<ol>
+<li>饼图的引出点及指引线</li>
+</ol>
+<p>// 饼图引出点<br>CGFloat pieX = point.x + (radius)<em>cos(startAngle+(endAngle-startAngle)/2);<br>CGFloat pieY = point.y + (radius)</em>sin(startAngle+(endAngle-startAngle)/2);</p>
+<p>// 指引线引出点<br>CGFloat X = point.x + (radius+20)<em>cos(startAngle+(endAngle-startAngle)/2);<br>CGFloat Y = point.y + (radius+20)</em>sin(startAngle+(endAngle-startAngle)/2);<br>CGFloat lineWidth = 80;</p>
+<p>// 绘制小圆点<br>CAShapeLayer <em>circleLayer = [CAShapeLayer layer];<br>circleLayer.frame = CGRectMake(0, 0, 1, 1); // 指定frame，只是为了设置宽度和高度<br>circleLayer.position = CGPointMake(X, Y); // 设置居中显示<br>circleLayer.fillColor = [UIColor clearColor].CGColor; // 设置填充颜色<br>circleLayer.lineWidth = 2.0;<br>circleLayer.strokeColor = customColor.CGColor;<br>// 使用UIBezierPath创建路径<br>CGRect frame = CGRectMake(0, 0, 2, 2);<br>UIBezierPath </em>circlePath = [UIBezierPath bezierPathWithOvalInRect:frame];<br>// 设置CAShapeLayer与UIBezierPath关联<br>circleLayer.path = circlePath.CGPath;<br>// 将CAShaperLayer放到某个层上显示<br>[self.layer addSublayer:circleLayer];</p>
+<ol>
+<li>画引出直线</li>
+</ol>
+<p>// 画第一段直线<br>CAShapeLayer <em>lineLayer = [CAShapeLayer layer];<br>lineLayer.frame = CGRectMake(0, 0, 1, 1); // 指定frame，只是为了设置宽度和高度<br>lineLayer.fillColor = [UIColor clearColor].CGColor; // 设置填充颜色<br>lineLayer.lineWidth = 1.0;<br>lineLayer.strokeColor = customColor.CGColor;<br>UIBezierPath </em>indicatrixLine = [UIBezierPath bezierPath];<br>[indicatrixLine moveToPoint:CGPointMake(pieX, pieY)];<br>[indicatrixLine addLineToPoint:CGPointMake(X, Y)];<br>lineLayer.path = indicatrixLine.CGPath;<br>lineLayer.lineWidth = 1.0;<br>lineLayer.strokeColor = customColor.CGColor;<br>[self.layer addSublayer:lineLayer];</p>
+<p>if (X &lt; point.x) { // 饼图左侧<br>X = X - lineWidth;<br>}<br>// 添加指引线(第二段直线)<br>UIView *line = [[UIView alloc] initWithFrame:CGRectMake(X, Y, lineWidth, 1)];<br>line.backgroundColor = customColor;<br>[self.subviews[0] addSubview:line];</p>
+<ol>
+<li>添加饼图相对应提示文字</li>
+</ol>
+<p>// 添加文字<br>UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(X, Y - 15, lineWidth, 30)];<br>label.font = [UIFont systemFontOfSize:13];<br>label.textColor = customColor;<br>label.numberOfLines = 0;<br>label.text = type_names[i];<br>label.attributedText = [self setupAttriLabelWithTitleStr:type_names[i] ValueStr:[NSString stringWithFormat:@”%@”, targetValues[i]]];<br>[self.subviews[0] addSubview:label];<br>if (X &lt; point.x) { // 饼图左侧<br>label.textAlignment = NSTextAlignmentLeft;<br>} else {<br>label.textAlignment = NSTextAlignmentRight;<br>}</p>
+<p>/**</p>
+<ul>
+<li>label 的富文本布局<br>*</li>
+<li>titleStr 标题</li>
+<li>ValueStr 值<br>*/</li>
+</ul>
+<ul>
+<li>(NSMutableAttributedString <em>)setupAttriLabelWithTitleStr:(NSString </em>)titleStr ValueStr:(NSString *)valueStr {</li>
+</ul>
+<p>NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@”%@\n%@”, titleStr, valueStr]];<br>[string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:12] range:NSMakeRange(titleStr.length+1, valueStr.length)];<br>return string;<br>}</p>
+<ol>
+<li>空心展示饼图</li>
+</ol>
+<p>// 画一个圆, 用来空心(如果满圆则可以不要这块)<br>UIBezierPath <em>radiusPath = [UIBezierPath bezierPathWithArcCenter:point radius:radius </em> 0.3 startAngle:0 endAngle:2<em>M_PI clockwise:YES];<br>[radiusPath addLineToPoint:point];<br>[radiusPath closePath];<br>CAShapeLayer </em>shapeLayer = [CAShapeLayer layer];<br>shapeLayer.lineWidth = 1;<br>shapeLayer.fillColor = [UIColor whiteColor].CGColor;<br>shapeLayer.path = radiusPath.CGPath;<br>[self.layer addSublayer:shapeLayer];</p>
+<ol>
+<li>露出方法,在所需控制器里调用即可</li>
+</ol>
+<p>/**</p>
+<ul>
+<li>画饼状图</li>
+<li>@param type_names   分类名称值</li>
+<li>@param targetValues 所有目标值<br>*/</li>
+</ul>
+<ul>
+<li>(void)drawPieChartViewWithType_Names:(NSMutableArray <em>)type_names TargetValues:(NSMutableArray </em>)targetValues;</li>
+</ul>
+<p>初始化:</p>
+<p>// 饼图相关<br>@property (strong, nonatomic) ZLBezierPieView <em>pieChartView;<br>@property (strong, nonatomic) NSMutableArray </em>type_names; // 类型名称<br>@property (strong, nonatomic) NSMutableArray *type_values; // 数据值</p>
+<p>懒加载:</p>
+<p>#pragma mark - 懒加载</p>
+<p>// 饼图类型名称</p>
+<ul>
+<li>(NSMutableArray *)type_names {<br>if (!_type_names) {<br>_type_names = [NSMutableArray array];<br>_type_names = [NSMutableArray arrayWithArray:@[@”主粮系列”,@”零食世界”,@”益智玩具”,@”衣服狗窝”,@”保健医用”,@”活体”,@”日用系列”]];<br>}<br>return _type_names;<br>}</li>
+</ul>
+<p>// 饼图类型数据</p>
+<ul>
+<li>(NSMutableArray *)type_values {<br>if (!_type_values) {<br>_type_values = [NSMutableArray array];<br>_type_values = [NSMutableArray arrayWithArray:@[@”100”,@”100”,@”100”,@”200”,@”200”,@”100”,@”200”]];</li>
+</ul>
+<p>}<br>return _type_values;<br>}</p>
+<p>饼图画布初始化:</p>
+<p>// 饼图画布初始化<br>_pieChartView = [ZLBezierPieView initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 250)];<br>_pieChartView.backgroundColor = [UIColor clearColor];<br>[self.view addSubview:_pieChartView];<br>// 饼图<br>[_pieChartView drawPieChartViewWithType_Names:self.type_names TargetValues:self.type_values];</p>
+<p>这个时候就可以测试看效果了.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/23/iOS后台下载及管理库/" rel="next" title="iOS后台下载及管理库">
+                <i class="fa fa-chevron-left"></i> iOS后台下载及管理库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/28/Objective-C-Runtime/" rel="prev" title="Objective-C Runtime">
+                Objective-C Runtime <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">sadmile</p>
+              <p class="site-description motion-element" itemprop="description">日常开发调研、收藏整理的技术栈</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sadmile</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
